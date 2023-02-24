@@ -1,0 +1,74 @@
+.episode-details{
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+   grid-gap: 2rem;
+   height: fit-content;
+}
+
+.episode-list::before{
+   content: 'Episode List';
+   grid-column: 1 / -1;
+   height: fit-content;
+   padding: 1rem;
+   background-color: var(--color-bg);
+}
+
+.episode-list{
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+   width: 100%;
+   height: fit-content;
+   gap: 0.3rem;
+}
+
+.episode-btn.active{
+   background-color: var(--color-primary-variant) !important;
+   pointer-events: none;
+}
+.episode-btn{
+   text-align: center;
+   padding: 5px 0;
+   height: 30px;
+   font-size: 14px;
+   background-color: var(--color-primary);
+}
+
+.episode-btn.active{
+   background-color: var(--color-bg-variant);
+   pointer-events: none;
+}
+
+.episode-btn:hover{
+   background-color: var(--color-bg-variant);
+}
+
+.details-container{
+   background-color: var(--color-bg);
+   padding: 12px;
+   height: fit-content;
+}
+
+.episode-page{
+   grid-column: 1 / -1;
+}
+.episode-page button:hover{
+   background-color: var(--color-bg-variant);
+}
+.episode-page button{
+   margin: 5px;
+   width: 50px;
+   padding: 5px;
+   font-size: 12px;
+   background-color: var(--color-primary);
+   color: var(--color-white);
+   cursor: pointer;
+}
+
+@media screen and (max-width: 1024px) {
+   
+}
+@media screen and (max-width: 600px) {
+   .episode-details{
+      padding: 0 1rem;
+   }
+}

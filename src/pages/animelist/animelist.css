@@ -1,0 +1,14 @@
+.page-wrapper{
+   display: grid;
+   align-items: center;
+   min-height: 100vh;
+   padding: 3rem 0;
+}
+.category-name{
+   width: 80%;
+   margin: 0 auto;
+   text-transform: capitalize;
+   display: flex;
+   align-items: center;
+   gap: 0.3rem;
+}
