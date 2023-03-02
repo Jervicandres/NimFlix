@@ -13,14 +13,14 @@ export const Navbar = () => {
    const [searchAnime, setSearchAnime] = useState("")
    const [searchResult, setSearchResult] = useState(null)
 
-   const searchAnimeTitle = async () => {
+   useEffect(()=> {
+      const searchAnimeTitle = async () => {
          const result = await axios.get(`https://gogoanime.consumet.stream/search?keyw=${searchAnime}`).then(res => res.data)
          setSearchResult(result)
-   }
-   useEffect(()=> {
+      }
       const timeout = setTimeout(() => {
          searchAnimeTitle()
-      }, 500)
+      }, 1000)
       return () => clearTimeout(timeout)
    }, [searchAnime])
 

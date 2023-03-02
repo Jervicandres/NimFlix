@@ -1,7 +1,6 @@
 .animelist-wrapper{
    display: grid;
    min-height: 60vh;
-   margin-top: 3rem;
 }
 
 .animelist-category{
@@ -135,6 +134,14 @@
 .page-btn.active{
    background-color: var(--color-bg-variant);
    pointer-events: none;
+}
+
+.preloader{
+   display: flex !important;
+   grid-column: 1 / -1;
+   justify-content: center;
+   align-items: center;
+   height: 60vh;
 }
 
 /* MEDIA QUERIES - MEDIUM DEVICES */

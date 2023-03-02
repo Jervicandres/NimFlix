@@ -1,4 +1,3 @@
-import React from 'react'
 import { useEffect,useRef } from 'react'
 
 export const PageTitle = (title, prevailOnUnmount = false) => {
@@ -11,5 +10,5 @@ export const PageTitle = (title, prevailOnUnmount = false) => {
    useEffect(() => () => {
       if(!prevailOnUnmount)
       document.title = defaultTitle.current
-   },[])
+   },[prevailOnUnmount])
 }

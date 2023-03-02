@@ -5,7 +5,7 @@ import './AnimeDescription.css'
 
 export const AnimeDescription = ({animeDetails, animeId}) => {
    const {animeTitle, type, releasedDate, status, genres, animeImg} = animeDetails
-   PageTitle(animeTitle || "Loading...")
+   PageTitle(("Watching: " + animeTitle) || "Loading...")
    if(!animeTitle){
       return (
       <div className='anime-description-container'>

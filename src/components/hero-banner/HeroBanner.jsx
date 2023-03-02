@@ -11,13 +11,15 @@ export const HeroBanner = () => {
   const [animeIndex, setAnimeIndex] = useState(0)
   const [startSlide, setStartSlide] = useState(false)
 
-  const apiRequest = async () => {
-    await axios.get(`https://gogoanime.consumet.stream/top-airing`)
-    .then(res => setAnimeSlide(res.data))
-    animeSlide && setStartSlide(true)
-  }
+  
   useEffect(() => {
-    apiRequest()
+    const apiRequest = async () => {
+      await axios.get(`https://gogoanime.consumet.stream/top-airing`)
+      .then(res => setAnimeSlide(res.data))
+      animeSlide && setStartSlide(true)
+    }
+
+    !startSlide && apiRequest()
     const interval = setInterval(()=>{
           setAnimeIndex(pre=> pre+1)
         },5000)
@@ -28,7 +30,7 @@ export const HeroBanner = () => {
     }
 
     return () => clearInterval(interval)
-  }, [])
+  }, [animeIndex,animeSlide,startSlide])
 
   return (
     <section className='hero-section'>

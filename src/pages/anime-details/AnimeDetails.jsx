@@ -15,18 +15,18 @@ export const AnimeDetails = () => {
    const episodePerPage = 100
    
    PageTitle(animeDetails?.animeTitle || "Loading...")
-   const apiRequest = async () => {
-      await axios.get(`https://gogoanime.consumet.stream/anime-details/${animeId}`)
-            .then(res => {
-               setAnimeDetails(res.data)
-               setEpisodeList(res.data.episodesList.reverse())
-            }).catch(() => navigate("/sss"))
-   }
+   
 
    useEffect(() => {
+      const apiRequest = async () => {
+         await axios.get(`https://gogoanime.consumet.stream/anime-details/${animeId}`)
+               .then(res => {
+                  setAnimeDetails(res.data)
+                  setEpisodeList(res.data.episodesList.reverse())
+               }).catch(error => navigate(`/${error}`))
+      }
       apiRequest()
-      
-   }, [animeId])
+   }, [animeId,navigate])
 
    /*          100                1           100     */
    const lastEpisodeIndex = currentPage * episodePerPage

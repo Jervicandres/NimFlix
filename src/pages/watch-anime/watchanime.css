@@ -7,6 +7,7 @@
    justify-content: center;
    padding-top: 2rem;
    grid-gap: 2rem;
+   position: relative;
 }
 
 .video-container{
