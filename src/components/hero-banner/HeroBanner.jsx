@@ -14,8 +14,11 @@ export const HeroBanner = () => {
   
   useEffect(() => {
     const apiRequest = async () => {
-      await axios.get(`https://gogoanime.consumet.stream/top-airing`)
-      .then(res => setAnimeSlide(res.data))
+      await axios.get(`https://api.consumet.org/meta/anilist/trending`)
+      .then(res => {
+        setAnimeSlide(res.data.results)
+        console.log(res.data.results)
+      })
       animeSlide && setStartSlide(true)
     }
 
@@ -36,20 +39,19 @@ export const HeroBanner = () => {
     <section className='hero-section'>
         { 
         animeSlide ?
-        animeSlide.slice(0,10).map(({animeId,animeImg,animeTitle, latestEp},index) => {
+        animeSlide.map(({id,image,cover,title},index) => {
           return(
-            <div style={{ backgroundImage: `url(${animeImg})`}} key={index} className={`hero-banner ${animeIndex === index ? 'active' : ''}`}>
+            <div style={{ backgroundImage: `url(${cover})`}} key={index} className={`hero-banner ${animeIndex === index ? 'active' : ''}`}>
                 <div className="hero-details">
-                  <h4 style={{color: "var(--color-primary)"}}>#{animeIndex+1} TOP AIRING</h4>
-                  <Link to={`/details/${animeId}`} className='hero-title'>{animeTitle}</Link>
+                  <h4 style={{color: "var(--color-primary)"}}>#{animeIndex+1} TRENDING</h4>
+                  <Link to={`/details/${id}`} className='hero-title'>{title.english}</Link>
                   <div className="hero-button-container">
-                    <Link to={`/watch/${animeId.concat("-",latestEp.replace(" ","-")).toLowerCase()}`} className="hero-button watch"><FaPlay/> Watch Now</Link>
-                    <Link to={`/details/${animeId}`} className="hero-button"><BiDetail/> View Details</Link>
+                    <Link to={`/details/${id}`} className="hero-button watch"><BiDetail/> View Details</Link>
                   </div>
                 </div>
                 
                 <div className="hero-img-container">
-                  <img src={animeImg} className="hero-img" alt="sample" />
+                  <img src={image} className="hero-img" alt="sample" />
                 </div>
             </div>
           )

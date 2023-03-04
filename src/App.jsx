@@ -20,7 +20,7 @@ export const App = () => {
             <Routes>
                <Route path='/' element={<Main/>} />
                <Route path='/category/:categoryId/:page?/:subType?' element={<AnimeList/>} />
-               <Route path='/watch/:episodeId' element={<WatchAnime/>} />
+               <Route path='/watch/:animeId/:episodeId' element={<WatchAnime/>} />{/* CHANGE API ROUTE OF WATCHANIME AND ANIMEDETAILS */}
                <Route path='/details/:animeId' element={<AnimeDetails/>} />
                <Route path='/search/:keyword/:page?' element={<SearchResult/>} />
                <Route path='*' element={<NotFound/>} />

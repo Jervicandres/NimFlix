@@ -5,27 +5,23 @@ import './episode-details.css'
 import {Pagination} from '../pagination/Pagination'
 import { AnimeDescription } from '../anime-description/AnimeDescription'
 
-export const EpisodeDetails = ({episodeId, currentEpisode}) => {
+export const EpisodeDetails = ({animeId, currentEpisode}) => {
    const [episodeDetails, setEpisodeDetails] = useState([])
    const [episodeList, setEpisodeList] = useState([])
    const [currentPage, setCurrentPage] = useState(1)
    const episodePerPage = 100
-   const animeId = episodeId.toLowerCase().slice(0, episodeId.indexOf("-episode"))
-   
+   const animeURL = `https://api.consumet.org/meta/anilist/info/${animeId}`
    
    useEffect(() => {
-      try{
          const apiRequest = async () => {
-            const result = await axios.get(`https://gogoanime.consumet.stream/anime-details/${animeId}`)
-            setEpisodeDetails(result.data)
-            setEpisodeList(result.data.episodesList.reverse())
+            await axios.get(animeURL).then(({data}) => {
+               setEpisodeDetails(data)
+               setEpisodeList(data.episodes)
+            })
+            .catch(error=> console.error(error))
          }
          apiRequest()
-      }
-      catch(e){
-         console.error(e)
-      }
-   }, [episodeId,animeId])
+   }, [currentEpisode,animeURL])
 
    /*          100                1           100     */
    const lastEpisodeIndex = currentPage * episodePerPage
@@ -38,24 +34,24 @@ export const EpisodeDetails = ({episodeId, currentEpisode}) => {
    return (
       <div className='episode-details'>
          <div className="details-container">
-            {episodeList ? <AnimeDescription animeDetails={episodeDetails} animeId={animeId} /> : ""}
+            {episodeDetails ? <AnimeDescription animeDetails={episodeDetails} animeId={animeId} /> : ""}
          </div>
          <div className="episode-list">
             <Pagination 
                totalEpisode={episodeList.length} 
                episodePerPage={episodePerPage} 
                setCurrentPage={setCurrentPage}
-               lastEpisode={episodeList[episodeList.length-1]?.episodeNum}
+               lastEpisode={episodeList[episodeList.length-1]?.number}
                />
             {currentEpisodes ?
                
                currentEpisodes.map((episode,index) => {
                   return(
                      <Link 
-                     to={`/watch/${episode.episodeId}`} 
-                     className={`episode-btn ${episode.episodeNum === currentEpisode && "active"}`}
+                     to={`/watch/${animeId}/${episode.id}`} 
+                     className={`episode-btn ${episode.id === currentEpisode && "active"}`}
                      key={index}
-                     >{episode.episodeNum}</Link>
+                     >{episode.number}</Link>
                   )
                })
             : <div>No episodes available</div>

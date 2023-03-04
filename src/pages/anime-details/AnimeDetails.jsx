@@ -13,20 +13,22 @@ export const AnimeDetails = () => {
    const [episodeList, setEpisodeList] = useState([])
    const [currentPage, setCurrentPage] = useState(1)
    const episodePerPage = 100
+   const animeURL = `https://api.consumet.org/meta/anilist/info/${animeId}`
    
-   PageTitle(animeDetails?.animeTitle || "Loading...")
+   PageTitle(animeDetails?.title.english || "Loading...")
    
 
    useEffect(() => {
       const apiRequest = async () => {
-         await axios.get(`https://gogoanime.consumet.stream/anime-details/${animeId}`)
+         await axios.get(animeURL)
                .then(res => {
+                  console.log(res.data)
                   setAnimeDetails(res.data)
-                  setEpisodeList(res.data.episodesList.reverse())
+                  setEpisodeList(res.data.episodes)
                }).catch(error => navigate(`/${error}`))
       }
       apiRequest()
-   }, [animeId,navigate])
+   }, [animeURL,navigate])
 
    /*          100                1           100     */
    const lastEpisodeIndex = currentPage * episodePerPage
@@ -46,16 +48,16 @@ export const AnimeDetails = () => {
    }
    return (
       <section className='anime-details-wrapper'>
-         <div style={{backgroundImage: `url(${animeDetails.animeImg})`}} className="anime-banner">
+         <div style={{backgroundImage: `url(${animeDetails.cover})`}} className="anime-banner">
          </div>
          <div className="header-wrapper">
             <div className="anime-details-header">
                <div className="anime-poster">
-                  <img src={animeDetails.animeImg} alt={animeDetails.animeTitle} />
+                  <img src={animeDetails.image} alt={animeDetails.title} />
                </div>
                <div className="anime-details-content">
-                  <h1>{animeDetails.animeTitle}</h1>
-                  <p>{animeDetails.synopsis}</p>
+                  <h1>{animeDetails.title.english}</h1>
+                  <p>{animeDetails.description}</p>
                </div>
             </div>
          </div>
@@ -67,11 +69,15 @@ export const AnimeDetails = () => {
                </div>
                <div className="row-data">
                   <p className="row-title">Other Titles</p>
-                  <p className="item">{animeDetails.otherNames.split(",").join(",\n")}</p>
+                  <p className="item">
+                     {animeDetails.title.native},<br/>
+                     {animeDetails.title.english},<br/>
+                     {animeDetails.title.romaji}
+                  </p>
                </div>
                <div className="row-data">
                   <p className="row-title">Released Date</p>
-                  <p className="item">{animeDetails.releasedDate}</p>
+                  <p className="item">{animeDetails.releaseDate}</p>
                </div>
                <div className="row-data">
                   <p className="row-title">Status</p>
@@ -87,15 +93,15 @@ export const AnimeDetails = () => {
                totalEpisode={episodeList.length} 
                episodePerPage={episodePerPage} 
                setCurrentPage={setCurrentPage}
-               lastEpisode={episodeList[episodeList.length-1]?.episodeNum}
+               lastEpisode={episodeList[episodeList.length-1]?.number}
             />
                { currentEpisodes.length > 0 ? currentEpisodes.map((episode, index) => {
                   return(
-                     <Link to={`/watch/${episode.episodeId}`} key={index} className="episode-card">
+                     <Link to={`/watch/${animeId}/${episode.id}`} key={index} className="episode-card">
                         <div className="episode-poster">
-                        <img src={animeDetails.animeImg} className="episode-poster" alt={animeDetails.episodeNum} />
+                        <img src={episode.image} className="episode-poster" alt={animeDetails.number} />
                         </div>
-                        {episode.episodeNum && <span>Episode: {episode.episodeNum}</span>}
+                        {episode.number && <span>Episode: {episode.number}</span>}
                      </Link>
                   ) 
                }) :

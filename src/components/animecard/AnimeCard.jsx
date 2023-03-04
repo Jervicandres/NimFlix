@@ -22,10 +22,10 @@ export const AnimeCard = ({category, keyword = null}) => {
    const [isLoading, setLoading] = useState(false)
 
    PageTitle(capitalize(categoryId?.replace(/-/g," ")) || "NimFlix")
-
+/* https://api.consumet.org/meta/anilist/recent-episodes?page={page}&perPage={perPage}&provider={provider} */
    useEffect(() => {
       const apiRequest = async () => {
-         var apiURL = category ? `https://gogoanime.consumet.stream/${category}` : `https://gogoanime.consumet.stream/search?keyw=${keyword}`
+         var apiURL = category ? `https://api.consumet.org/meta/anilist/${category}` : `https://gogoanime.consumet.stream/search?keyw=${keyword}`
          const apiParameter = { page: page, type: subType }
          const searchParameter = { page: page}
 

@@ -7,17 +7,17 @@ export const Main = () => {
    return (
       <>
          <HeroBanner/>
-         <AnimeCard 
-         category="recent-release"
+         {/* <AnimeCard 
+         category="recent-episodes"
          />
 
          <AnimeCard 
-         category="popular"
+         category="trending"
          />
 
          <AnimeCard 
-         category="anime-movies"
-         />
+         category="random-anime"
+         /> */}
       </>
    )
 }

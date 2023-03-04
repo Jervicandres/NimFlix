@@ -6,7 +6,7 @@ import { EpisodeDetails } from '../../components/episode-details/EpisodeDetails'
 import { MoonLoader } from 'react-spinners'
 
 export const WatchAnime = () => {
-   const {episodeId} = useParams()
+   const {animeId, episodeId} = useParams()
    const navigate = useNavigate()
    const [episodeRef, setEpisodeRef] = useState("")
    const [isLoading, setLoading] = useState(false)
@@ -14,9 +14,9 @@ export const WatchAnime = () => {
    useEffect(() => {
       setLoading(true)
       const loadEpisodeRef = async () => {
-         await axios.get(`https://gogoanime.consumet.stream/vidcdn/watch/${episodeId}`)
-         .then(res => {
-            setEpisodeRef(res.data.Referer)
+         await axios.get(`https://api.consumet.org/meta/anilist/watch/${episodeId}`)
+         .then(({data}) => {
+            setEpisodeRef(data.headers.Referer)
             
          })
          .catch(error=> navigate(`/${error}`))
@@ -50,7 +50,7 @@ export const WatchAnime = () => {
             </div>
             }
          </div>
-            <EpisodeDetails episodeId={episodeId} currentEpisode={episodeId.slice(-2).replace("-", "")}/>
+         <EpisodeDetails currentEpisode={episodeId} animeId={animeId}/>
       </section>
    )
 }
