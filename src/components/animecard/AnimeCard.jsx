@@ -22,16 +22,16 @@ export const AnimeCard = ({category, keyword = null}) => {
    const [isLoading, setLoading] = useState(false)
 
    PageTitle(capitalize(categoryId?.replace(/-/g," ")) || "NimFlix")
-/* https://api.consumet.org/meta/anilist/recent-episodes?page={page}&perPage={perPage}&provider={provider} */
    useEffect(() => {
       const apiRequest = async () => {
-         var apiURL = category ? `https://api.consumet.org/meta/anilist/${category}` : `https://gogoanime.consumet.stream/search?keyw=${keyword}`
-         const apiParameter = { page: page, type: subType }
+         var apiURL = `https://api-consumet-o1ty.vercel.app/meta/anilist/${category || keyword}`
+         const apiParameter = { page: page,perPage: categoryId ? 20: 10, provider: "gogoanime" }
          const searchParameter = { page: page}
 
          await axios.get(apiURL, {params: category ? apiParameter : searchParameter})
-         .then(res => {
-            setAnimeData(res.data)
+         .then(({data}) => {
+            console.log(data.results, category,categoryId)
+            setAnimeData(data.results)
          })
          .catch(error => {
             navigate(`/${error}`)
@@ -41,28 +41,11 @@ export const AnimeCard = ({category, keyword = null}) => {
          if(isNaN(page) || isNaN(subType)){
             navigate(`/category/${category}`)
          }
-         else if((categoryId || keyword) && animeData.length > 0){
-            setPagination([])
-            let currentPage = Number(page)
-            for(let nextPage=currentPage;nextPage<currentPage+3;nextPage++)
-            {  
-               if(nextPage+1>2 && nextPage === currentPage)
-               {
-                  for(let prevPage=currentPage-2;prevPage<=currentPage;prevPage++)
-                  {  prevPage !== 0 &&
-                     setPagination(prev => [...prev,prevPage])
-                  }
-               }
-               else{
-                  setPagination(prev => [...prev,nextPage])
-               }
-            }
-         }
       }
       setLoading(true)
       apiRequest()
 
-   }, [categoryId,keyword,page,subType,animeData.length, category, navigate])
+   }, [categoryId,keyword,page,subType, category, navigate])
 
    const animeList = animeData
 
@@ -90,26 +73,20 @@ export const AnimeCard = ({category, keyword = null}) => {
             </div>
             {
                (!isLoading && animeList.length>0) ?
-               animeList.slice(0,categoryId || keyword ? 20 : 10).map((anime, index) => {
-                  const episodeLink = `/watch/${anime?.episodeId}`
-                  const infoLink = `/details/${anime?.animeId}`
+               animeList.map((anime, index) => {
+                  let airSched = new Date(anime?.airingAt)
+                  const infoLink = `/details/${anime?.id}`
                   return (
                      <div className='anime-card' key={index}>
-                     <Link to={anime.episodeId ? episodeLink : infoLink} className="img-container">
-                        <img src={anime.animeImg ? anime.animeImg : "https://placeholder.com/assets/images/150x150-2-500x500.png"} alt={anime.animeTitle}/>
+                     <Link to={infoLink} className="img-container">
+                        <img src={ anime?.image || "https://placeholder.com/assets/images/150x150-2-500x500.png"} alt={anime.title?.userPreferred}/>
                      </Link>
-                     { 
-                        anime.episodeId ?
-                        <Link to={episodeLink} className='episode' >
-                           {`Episode ${anime?.episodeNum || "Loading..."}`}
-                        </Link> :
                         <Link to={infoLink} className='episode' >
-                           {anime.releasedDate ? `Released ${anime.releasedDate}` : anime.status ? anime.status : "Upcoming"}
+                           {anime.releaseDate ? `Released: ${anime.releaseDate}` : anime?.episodeNumber ? "Episode: " + anime?.episodeNumber :  "Upcoming"}
                         </Link>
-                     }
-                     {anime.subOrDub && <p className='subordub'>{anime.subOrDub}</p>}
-                     <Link to={anime.episodeId ? episodeLink : infoLink} className='title' >
-                        {anime.animeTitle}
+                        {/* {anime.airingAt && <p className='subordub'>{airSched}</p>} */}
+                     <Link to={infoLink} className='title' >
+                        {anime.title?.userPreferred || anime.title?.english || anime.title?.romaji}
                      </Link>
                   </div>)
             }) :
@@ -117,13 +94,7 @@ export const AnimeCard = ({category, keyword = null}) => {
             }
             {((categoryId || keyword) && animeData.length>0 && !isLoading) &&
             <div className='pagination'>
-               {
-                  pagination.map((link, index) => {
-                        return <Link key={index} to={category ? `/category/${category}/${link}` : `/search/${keyword}/${link}`} className={`page-btn ${link === Number(page) ? "active" : ""}`}>
-                              {link}
-                              </Link>
-                  })
-               }
+               
             </div>
             }
          </div>

@@ -1,6 +1,7 @@
 .animelist-wrapper{
    display: grid;
    min-height: 60vh;
+   margin-top: 3rem;
 }
 
 .animelist-category{

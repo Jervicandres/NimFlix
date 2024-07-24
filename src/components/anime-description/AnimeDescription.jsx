@@ -5,7 +5,7 @@ import './AnimeDescription.css'
 
 export const AnimeDescription = ({animeDetails, animeId}) => {
    const {title, type, releaseDate, status, genres, image} = animeDetails
-   const animeTitle = `${title?.english}`
+   const animeTitle = `${title?.english || title?.userPreferred || title?.romaji}`
    PageTitle(title ? ("Watching: " + animeTitle) : "Loading...")
    if(!title){
       return (

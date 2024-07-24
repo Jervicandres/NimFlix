@@ -14,7 +14,7 @@ export const HeroBanner = () => {
   
   useEffect(() => {
     const apiRequest = async () => {
-      await axios.get(`https://api.consumet.org/meta/anilist/trending`)
+      await axios.get(`https://api-consumet-o1ty.vercel.app/meta/anilist/trending`)
       .then(res => {
         setAnimeSlide(res.data.results)
         console.log(res.data.results)

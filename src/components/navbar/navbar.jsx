@@ -15,11 +15,14 @@ export const Navbar = () => {
 
    useEffect(()=> {
       const searchAnimeTitle = async () => {
-         const result = await axios.get(`https://gogoanime.consumet.stream/search?keyw=${searchAnime}`).then(res => res.data)
-         setSearchResult(result)
+         await axios.get(`https://api-consumet-o1ty.vercel.app/meta/anilist/${searchAnime}`)
+         .then(({data}) => {
+         setSearchResult(data.results)
+      })
+         
       }
       const timeout = setTimeout(() => {
-         searchAnimeTitle()
+         searchAnime && searchAnimeTitle()
       }, 1000)
       return () => clearTimeout(timeout)
    }, [searchAnime])
@@ -33,11 +36,15 @@ export const Navbar = () => {
       <header>
             <Link to='/' className='header-logo'><img src={Logo} alt="NimFlix" /><h1>NimFlix</h1></Link>
          <nav ref={navRef} className='navbar'>
-            <AnimeSearch placeholder="Search..." data={searchResult} setSearchAnime={setSearchAnime} />
+            <AnimeSearch 
+            placeholder="Search..." 
+            data={searchResult} 
+            setSearchAnime={setSearchAnime} 
+            />
+            
             <div className="nav-links">
             <Link to='/category/popular'>Popular</Link>
-            <Link to='/category/anime-movies'>Movies</Link>
-            <Link to='/category/recent-release'>Recent</Link>
+            <Link to='/category/recent-episodes'>Recent</Link>
             </div>
          </nav>
          <button onClick={toggleNavbar} className="nav-btn">

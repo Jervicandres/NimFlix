@@ -1,20 +1,20 @@
 import React from 'react'
 import { MdLeaderboard, MdNewReleases } from 'react-icons/md'
-import { RiMovie2Fill } from 'react-icons/ri'
+import { BiTrendingUp } from 'react-icons/bi'
 import { FaSearch } from 'react-icons/fa'
 const getCategory = name => {
    switch(name){
-      case "recent-release":
+      case "recent-episodes":
          return <>
-            <MdNewReleases color='CD5888'/> Recent Release
+            <MdNewReleases color='CD5888'/> Recent Episodes
             </>
       case "popular":
          return <>
             <MdLeaderboard color='CD5888'/> Popular Anime
             </>
-      case "anime-movies":
+      case "trending":
          return <>
-            <RiMovie2Fill color='CD5888'/> Anime Movies
+            <BiTrendingUp color='CD5888'/> Trending
             </>
       default: 
          return <>

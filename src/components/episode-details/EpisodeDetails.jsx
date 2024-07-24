@@ -10,7 +10,7 @@ export const EpisodeDetails = ({animeId, currentEpisode}) => {
    const [episodeList, setEpisodeList] = useState([])
    const [currentPage, setCurrentPage] = useState(1)
    const episodePerPage = 100
-   const animeURL = `https://api.consumet.org/meta/anilist/info/${animeId}`
+   const animeURL = `https://api-consumet-o1ty.vercel.app/meta/anilist/info/${animeId}`
    
    useEffect(() => {
          const apiRequest = async () => {

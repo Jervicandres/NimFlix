@@ -14,10 +14,10 @@ export const WatchAnime = () => {
    useEffect(() => {
       setLoading(true)
       const loadEpisodeRef = async () => {
-         await axios.get(`https://api.consumet.org/meta/anilist/watch/${episodeId}`)
+         await axios.get(`https://api-consumet-o1ty.vercel.app/meta/anilist/watch/${episodeId}`)
          .then(({data}) => {
             setEpisodeRef(data.headers.Referer)
-            
+            console.log(data.sources[0].url)
          })
          .catch(error=> navigate(`/${error}`))
          .finally(()=> setLoading(false))
@@ -44,6 +44,7 @@ export const WatchAnime = () => {
             className="video-player"
             allowFullScreen
             scrolling='no'
+            type="application/x-mpegURL"
             ></iframe></>:
             <div className='video-preloader'>
                <MoonLoader color="#FFF" />
